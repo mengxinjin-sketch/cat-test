@@ -50,14 +50,14 @@
             <h1 class="text-4xl md:text-5xl font-bold mb-4 text-cat-primary">猫咪性格测试</h1>
             <p class="text-lg md:text-xl mb-6 opacity-80">超准！测测你是哪种小可爱猫咪</p>
             
-            <!-- 首页猫咪图片墙 -->
+            <!-- 首页猫咪图片墙（全猫咪+稳定链接） -->
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-                <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=200" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
-                <img src="https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=200" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
-                <img src="https://images.unsplash.com/photo-1596854404958-bfe07ff56e90?w=200" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
-                <img src="https://images.unsplash.com/photo-1514888249469-919642777492?w=200" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
-                <img src="https://images.unsplash.com/photo-1519002897601-0e7a88276a5e?w=200" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
-                <img src="https://images.unsplash.com/photo-1529933791912-49de57543dd2?w=200" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
+                <img src="https://picsum.photos/id/40/200/150" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
+                <img src="https://picsum.photos/id/1074/200/150" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
+                <img src="https://picsum.photos/id/1069/200/150" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
+                <img src="https://picsum.photos/id/1070/200/150" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
+                <img src="https://picsum.photos/id/1077/200/150" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
+                <img src="https://picsum.photos/id/1078/200/150" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
             </div>
 
             <button onclick="startTest()" class="bg-cat-primary text-white px-10 py-4 rounded-full text-2xl cat-shadow btn-hover">
@@ -104,11 +104,11 @@
     </div>
 
     <script>
-        // 🔥 优化版：12道趣味猫咪题目（4大维度各3题），每题配专属猫咪图片
+        // 🔥 优化版：12道趣味猫咪题目（每题配稳定猫咪图片）
         const questions = [
             // 社交维度 E/I (3题)
             { 
-                id:1, type:"E/I", img:"https://images.unsplash.com/photo-1529933394949-1212b55c9451?w=200",
+                id:1, type:"E/I", img:"https://picsum.photos/id/40/200/200",
                 q:"家里来了陌生客人，你会？", a:[
                     {text:"主动贴贴，求摸摸", score:"E"},
                     {text:"躲起来偷偷观察", score:"I"},
@@ -116,7 +116,7 @@
                     {text:"吓得躲进猫窝", score:"I"}
             ]},
             { 
-                id:2, type:"E/I", img:"https://images.unsplash.com/photo-1596854404958-bfe07ff56e90?w=200",
+                id:2, type:"E/I", img:"https://picsum.photos/id/1074/200/200",
                 q:"你更喜欢怎么玩耍？", a:[
                     {text:"和小伙伴一起疯玩", score:"E"},
                     {text:"自己玩逗猫棒超开心", score:"I"},
@@ -124,7 +124,7 @@
                     {text:"拒绝和别的猫一起玩", score:"I"}
             ]},
             { 
-                id:3, type:"E/I", img:"https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=200",
+                id:3, type:"E/I", img:"https://picsum.photos/id/1069/200/200",
                 q:"猫群聚会你会？", a:[
                     {text:"成为全场焦点小明星", score:"E"},
                     {text:"安静待在角落不凑热闹", score:"I"},
@@ -134,7 +134,7 @@
             
             // 认知维度 S/N (3题)
             { 
-                id:4, type:"S/N", img:"https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=200",
+                id:4, type:"S/N", img:"https://picsum.photos/id/1070/200/200",
                 q:"发现一个新纸箱，你会？", a:[
                     {text:"先踩踩稳不安全，实用为主", score:"S"},
                     {text:"把纸箱当成宇宙飞船冒险", score:"N"},
@@ -142,7 +142,7 @@
                     {text:"幻想纸箱里藏着神秘宝藏", score:"N"}
             ]},
             { 
-                id:5, type:"S/N", img:"https://images.unsplash.com/photo-1514888249469-919642777492?w=200",
+                id:5, type:"S/N", img:"https://picsum.photos/id/1077/200/200",
                 q:"看到窗外小鸟，你想？", a:[
                     {text:"飞得太快，根本抓不到", score:"S"},
                     {text:"好想长出翅膀和它一起飞", score:"N"},
@@ -150,7 +150,7 @@
                     {text:"窗外的世界也太奇妙了吧", score:"N"}
             ]},
             { 
-                id:6, type:"S/N", img:"https://images.unsplash.com/photo-1519002897601-0e7a88276a5e?w=200",
+                id:6, type:"S/N", img:"https://picsum.photos/id/1078/200/200",
                 q:"主人给新玩具，你最在意？", a:[
                     {text:"好不好咬、耐不耐用", score:"S"},
                     {text:"能玩出什么新奇花样", score:"N"},
@@ -160,7 +160,7 @@
             
             // 决策维度 T/F (3题)
             { 
-                id:7, type:"T/F", img:"https://images.unsplash.com/photo-1529933394949-1212b55c9451?w=200",
+                id:7, type:"T/F", img:"https://picsum.photos/id/40/200/200",
                 q:"好朋友被欺负了，你会？", a:[
                     {text:"立刻冲上去保护朋友", score:"F"},
                     {text:"冷静找主人帮忙解决", score:"T"},
@@ -168,7 +168,7 @@
                     {text:"理智分析，打不过就跑", score:"T"}
             ]},
             { 
-                id:8, type:"T/F", img:"https://images.unsplash.com/photo-1596854404958-bfe07ff56e90?w=200",
+                id:8, type:"T/F", img:"https://picsum.photos/id/1074/200/200",
                 q:"主人伤心哭了，你会？", a:[
                     {text:"蹭蹭安慰，贴贴治愈", score:"F"},
                     {text:"默默陪伴，不打扰", score:"T"},
@@ -176,7 +176,7 @@
                     {text:"等情绪好了再互动", score:"T"}
             ]},
             { 
-                id:9, type:"T/F", img:"https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=200",
+                id:9, type:"T/F", img:"https://picsum.photos/id/1069/200/200",
                 q:"选睡觉的地方，你优先？", a:[
                     {text:"挨着主人，超有安全感", score:"F"},
                     {text:"最暖和舒服的位置", score:"T"},
@@ -186,7 +186,7 @@
             
             // 行动维度 J/P (3题)
             { 
-                id:10, type:"J/P", img:"https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=200",
+                id:10, type:"J/P", img:"https://picsum.photos/id/1070/200/200",
                 q:"你的干饭风格是？", a:[
                     {text:"准时准点，一秒不差", score:"J"},
                     {text:"饿了就吃，随心所欲", score:"P"},
@@ -194,7 +194,7 @@
                     {text:"想吃就吃，不吃拉倒", score:"P"}
             ]},
             { 
-                id:11, type:"J/P", img:"https://images.unsplash.com/photo-1514888249469-919642777492?w=200",
+                id:11, type:"J/P", img:"https://picsum.photos/id/1077/200/200",
                 q:"出门散步，你会？", a:[
                     {text:"走固定路线，绝不乱跑", score:"J"},
                     {text:"随性探索，走到哪算哪", score:"P"},
@@ -202,7 +202,7 @@
                     {text:"好奇就拐弯，无计划冒险", score:"P"}
             ]},
             { 
-                id:12, type:"J/P", img:"https://images.unsplash.com/photo-1519002897601-0e7a88276a5e?w=200",
+                id:12, type:"J/P", img:"https://picsum.photos/id/1078/200/200",
                 q:"你的作息习惯是？", a:[
                     {text:"准时睡觉，作息超规律", score:"J"},
                     {text:"熬夜玩耍，困了才睡", score:"P"},

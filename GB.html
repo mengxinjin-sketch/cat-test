@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>给最爱的你 ❤️</title>
+
+    <!-- 引入图标库 -->
+
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- 引入Tailwind CSS 快速美化样式 -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+
+        /* 全局渐变背景 */
+
+        body {
+
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+
+            min-height: 100vh;
+
+            overflow-x: hidden;
+
+        }
+
+        /* 爱心漂浮动画 */
+
+        .heart {
+
+            position: absolute;
+
+            color: #ff5e7d;
+
+            animation: float 3s ease-in-out infinite;
+
+            opacity: 0.8;
+
+        }
+
+        /* 文字渐变效果 */
+
+        .text-gradient {
+
+            background: linear-gradient(to right, #ff5e7d, #ff9a9e);
+
+            -webkit-background-clip: text;
+
+            color: transparent;
+
+        }
+
+        /* 漂浮动画关键帧 */
+
+        @keyframes float {
+
+            0% { transform: translateY(0px) rotate(0deg); }
+
+            50% { transform: translateY(-20px) rotate(10deg); }
+
+            100% { transform: translateY(0px) rotate(0deg); }
+
+        }
+
+        /* 按钮hover动画 */
+
+        .btn-love:hover {
+
+            transform: scale(1.1);
+
+            box-shadow: 0 0 20px rgba(255, 94, 125, 0.5);
+
+        }
+
+    </style>
+
+</head>
+
+<body class="flex flex-col items-center justify-center p-5">
+
+    <!-- 漂浮爱心 -->
+
+    <div class="heart text-2xl absolute top-20 left-10"><i class="fa-solid fa-heart"></i></div>
+
+    <div class="heart text-xl absolute top-40 right-20" style="animation-delay: 0.5s"><i class="fa-solid fa-heart"></i></div>
+
+    <div class="heart text-3xl absolute bottom-30 left-30" style="animation-delay: 1s"><i class="fa-solid fa-heart"></i></div>
+
+    <div class="heart text-xl absolute bottom-50 right-10" style="animation-delay: 1.5s"><i class="fa-solid fa-heart"></i></div>
+
+
+
+    <!-- 告白主体内容 -->
+
+    <div class="max-w-lg w-full bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-2xl text-center">
+
+        <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-gradient mb-6">
+
+            遇见你，是我所有的幸运 ❤️
+
+        </h1>
+
+        
+
+        <p class="text-gray-700 text-lg leading-8 mb-6">
+
+            从遇见你的那一刻起，我的世界便有了不一样的色彩。<br>
+
+            你的笑容，你的温柔，你的一切，都让我心动不已。<br>
+
+            我想把所有的温柔和浪漫都给你，<br>
+
+            想陪你看遍日出日落，走过春夏秋冬。
+
+        </p>
+
+
+
+        <p class="text-[clamp(1.2rem,3vw,1.5rem)] font-semibold text-gradient mb-8">
+
+            我喜欢你，不是一时兴起，是深思熟虑。<br>
+
+            你愿意，做我余生的唯一吗？
+
+        </p>
+
+
+
+        <!-- 互动按钮 -->
+
+        <div class="flex gap-4 justify-center flex-wrap">
+
+            <button id="yesBtn" class="btn-love bg-gradient-to-r from-pink-400 to-red-400 text-white px-8 py-3 rounded-full text-lg font-medium transition-all duration-300">
+
+                我愿意 ❤️
+
+            </button>
+
+            <button id="noBtn" class="btn-love bg-gray-200 text-gray-600 px-8 py-3 rounded-full text-lg font-medium transition-all duration-300">
+
+                再考虑一下
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        // 我愿意按钮 点击效果
+
+        const yesBtn = document.getElementById('yesBtn');
+
+        yesBtn.addEventListener('click', () => {
+
+            alert('🥰 太好了！我会用一生去爱你、珍惜你！');
+
+            document.body.innerHTML = `
+
+                <div class="h-screen flex flex-col items-center justify-center text-center">
+
+                    <h1 class="text-4xl text-gradient font-bold mb-4">余生请多指教！❤️</h1>
+
+                    <i class="fa-solid fa-heart text-5xl text-pink-500 animate-bounce"></i>
+
+                </div>
+
+            `;
+
+        });
+
+
+
+        // 再考虑一下按钮 躲避效果（不让点）
+
+        const noBtn = document.getElementById('noBtn');
+
+        noBtn.addEventListener('mouseover', () => {
+
+            // 随机移动按钮位置
+
+            const x = Math.random() * (window.innerWidth - 150);
+
+            const y = Math.random() * (window.innerHeight - 80);
+
+            noBtn.style.position = 'absolute';
+
+            noBtn.style.left = x + 'px';
+
+            noBtn.style.top = y + 'px';
+
+        });
+
+    </script>
+
+</body>
+
+</html>

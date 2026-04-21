@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猫咪性格测试 🐱</title>
+    <!-- 引入图标库 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!--  Tailwind CSS 样式 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cat: {
+                            primary: '#FF9BB3',
+                            secondary: '#F8C8DC',
+                            dark: '#7B5E66',
+                            light: '#FFF5F7'
+                        }
+                    },
+                    fontFamily: {
+                        cute: ['"Comic Sans MS"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .cat-shadow {
+                box-shadow: 0 8px 20px rgba(255, 155, 179, 0.3);
+            }
+            .btn-hover {
+                @apply transition-all duration-300 hover:scale-105 active:scale-95;
+            }
+            .cat-img {
+                @apply rounded-xl w-32 h-32 object-cover mx-auto mb-4 border-2 border-cat-secondary;
+            }
+        }
+    </style>
+</head>
+<body class="bg-cat-light font-cute text-cat-dark min-h-screen">
+    <!-- 主容器 -->
+    <div class="max-w-3xl mx-auto p-4 md:p-8">
+        <!-- 全新首页（欢迎页）-->
+        <div id="welcome" class="text-center py-8">
+            <div class="text-7xl mb-4">🐱🐈😺</div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-cat-primary">猫咪性格测试</h1>
+            <p class="text-lg md:text-xl mb-6 opacity-80">超准！测测你是哪种小可爱猫咪</p>
+            
+            <!-- 首页猫咪图片墙 -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=200" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
+                <img src="https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=200" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
+                <img src="https://images.unsplash.com/photo-1596854404958-bfe07ff56e90?w=200" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
+                <img src="https://images.unsplash.com/photo-1514888249469-919642777492?w=200" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
+                <img src="https://images.unsplash.com/photo-1519002897601-0e7a88276a5e?w=200" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
+                <img src="https://images.unsplash.com/photo-1529933791912-49de57543dd2?w=200" class="rounded-xl shadow-md w-full h-32 object-cover" alt="猫咪">
+            </div>
+
+            <button onclick="startTest()" class="bg-cat-primary text-white px-10 py-4 rounded-full text-2xl cat-shadow btn-hover">
+                开始测试 🐾
+            </button>
+        </div>
+
+        <!-- 测试页面 -->
+        <div id="test" class="hidden py-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">答题中...</h2>
+                <span id="progress" class="bg-cat-secondary px-4 py-1 rounded-full text-sm">0/12 题</span>
+            </div>
+            <div class="bg-white rounded-2xl p-6 cat-shadow mb-8">
+                <div id="question-container" class="space-y-6">
+                    <!-- 题目+猫咪图片 由JS渲染 -->
+                </div>
+            </div>
+            <div class="text-center">
+                <button onclick="prevQuestion()" id="prev-btn" class="bg-gray-300 text-gray-600 px-6 py-2 rounded-full mr-4 btn-hover hidden">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> 上一题
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="bg-cat-primary text-white px-6 py-2 rounded-full btn-hover">
+                    下一题 <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+                <button onclick="submitTest()" id="submit-btn" class="bg-green-500 text-white px-6 py-2 rounded-full btn-hover hidden">
+                    完成测试 ✨
+                </button>
+            </div>
+        </div>
+
+        <!-- 结果页面 -->
+        <div id="result" class="hidden text-center py-12">
+            <div id="result-icon" class="text-7xl mb-4"></div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-2 text-cat-primary" id="result-title"></h2>
+            <p class="text-xl mb-6 opacity-80" id="result-type"></p>
+            <div class="bg-white rounded-2xl p-6 md:p-8 cat-shadow mb-8 text-left">
+                <p id="result-desc" class="text-lg leading-8"></p>
+            </div>
+            <button onclick="restartTest()" class="bg-cat-primary text-white px-8 py-3 rounded-full text-xl cat-shadow btn-hover">
+                重新测试 <i class="fa-solid fa-rotate-right ml-2"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 🔥 优化版：12道趣味猫咪题目（4大维度各3题），每题配专属猫咪图片
+        const questions = [
+            // 社交维度 E/I (3题)
+            { 
+                id:1, type:"E/I", img:"https://images.unsplash.com/photo-1529933394949-1212b55c9451?w=200",
+                q:"家里来了陌生客人，你会？", a:[
+                    {text:"主动贴贴，求摸摸", score:"E"},
+                    {text:"躲起来偷偷观察", score:"I"},
+                    {text:"淡定路过，无视一切", score:"N"},
+                    {text:"吓得躲进猫窝", score:"I"}
+            ]},
+            { 
+                id:2, type:"E/I", img:"https://images.unsplash.com/photo-1596854404958-bfe07ff56e90?w=200",
+                q:"你更喜欢怎么玩耍？", a:[
+                    {text:"和小伙伴一起疯玩", score:"E"},
+                    {text:"自己玩逗猫棒超开心", score:"I"},
+                    {text:"看心情选择独处/社交", score:"N"},
+                    {text:"拒绝和别的猫一起玩", score:"I"}
+            ]},
+            { 
+                id:3, type:"E/I", img:"https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=200",
+                q:"猫群聚会你会？", a:[
+                    {text:"成为全场焦点小明星", score:"E"},
+                    {text:"安静待在角落不凑热闹", score:"I"},
+                    {text:"偶尔互动，社恐又好奇", score:"N"},
+                    {text:"立刻逃跑，讨厌热闹", score:"I"}
+            ]},
+            
+            // 认知维度 S/N (3题)
+            { 
+                id:4, type:"S/N", img:"https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=200",
+                q:"发现一个新纸箱，你会？", a:[
+                    {text:"先踩踩稳不安全，实用为主", score:"S"},
+                    {text:"把纸箱当成宇宙飞船冒险", score:"N"},
+                    {text:"闻闻味道，检查有没有小鱼干", score:"S"},
+                    {text:"幻想纸箱里藏着神秘宝藏", score:"N"}
+            ]},
+            { 
+                id:5, type:"S/N", img:"https://images.unsplash.com/photo-1514888249469-919642777492?w=200",
+                q:"看到窗外小鸟，你想？", a:[
+                    {text:"飞得太快，根本抓不到", score:"S"},
+                    {text:"好想长出翅膀和它一起飞", score:"N"},
+                    {text:"小鸟是不是在找好吃的？", score:"S"},
+                    {text:"窗外的世界也太奇妙了吧", score:"N"}
+            ]},
+            { 
+                id:6, type:"S/N", img:"https://images.unsplash.com/photo-1519002897601-0e7a88276a5e?w=200",
+                q:"主人给新玩具，你最在意？", a:[
+                    {text:"好不好咬、耐不耐用", score:"S"},
+                    {text:"能玩出什么新奇花样", score:"N"},
+                    {text:"有没有香喷喷的肉味", score:"S"},
+                    {text:"颜值高不高，配不配我", score:"N"}
+            ]},
+            
+            // 决策维度 T/F (3题)
+            { 
+                id:7, type:"T/F", img:"https://images.unsplash.com/photo-1529933394949-1212b55c9451?w=200",
+                q:"好朋友被欺负了，你会？", a:[
+                    {text:"立刻冲上去保护朋友", score:"F"},
+                    {text:"冷静找主人帮忙解决", score:"T"},
+                    {text:"心疼朋友，陪它一起难过", score:"F"},
+                    {text:"理智分析，打不过就跑", score:"T"}
+            ]},
+            { 
+                id:8, type:"T/F", img:"https://images.unsplash.com/photo-1596854404958-bfe07ff56e90?w=200",
+                q:"主人伤心哭了，你会？", a:[
+                    {text:"蹭蹭安慰，贴贴治愈", score:"F"},
+                    {text:"默默陪伴，不打扰", score:"T"},
+                    {text:"用小脑袋擦掉主人眼泪", score:"F"},
+                    {text:"等情绪好了再互动", score:"T"}
+            ]},
+            { 
+                id:9, type:"T/F", img:"https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=200",
+                q:"选睡觉的地方，你优先？", a:[
+                    {text:"挨着主人，超有安全感", score:"F"},
+                    {text:"最暖和舒服的位置", score:"T"},
+                    {text:"和好朋友贴贴睡", score:"F"},
+                    {text:"安静不被打扰的角落", score:"T"}
+            ]},
+            
+            // 行动维度 J/P (3题)
+            { 
+                id:10, type:"J/P", img:"https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=200",
+                q:"你的干饭风格是？", a:[
+                    {text:"准时准点，一秒不差", score:"J"},
+                    {text:"饿了就吃，随心所欲", score:"P"},
+                    {text:"跟着主人的时间干饭", score:"J"},
+                    {text:"想吃就吃，不吃拉倒", score:"P"}
+            ]},
+            { 
+                id:11, type:"J/P", img:"https://images.unsplash.com/photo-1514888249469-919642777492?w=200",
+                q:"出门散步，你会？", a:[
+                    {text:"走固定路线，绝不乱跑", score:"J"},
+                    {text:"随性探索，走到哪算哪", score:"P"},
+                    {text:"提前规划好探索路线", score:"J"},
+                    {text:"好奇就拐弯，无计划冒险", score:"P"}
+            ]},
+            { 
+                id:12, type:"J/P", img:"https://images.unsplash.com/photo-1519002897601-0e7a88276a5e?w=200",
+                q:"你的作息习惯是？", a:[
+                    {text:"准时睡觉，作息超规律", score:"J"},
+                    {text:"熬夜玩耍，困了才睡", score:"P"},
+                    {text:"严格遵守生物钟", score:"J"},
+                    {text:"想睡就睡，毫无规律", score:"P"}
+            ]}
+        ];
+
+        // 全局变量
+        let currentQuestion = 0;
+        let answers = {};
+        const totalQuestions = questions.length; // 12道题
+
+        // 猫咪品种人格结果库
+        const personalityResults = {
+            ESTJ: {icon:"🐱",title:"英短蓝猫",desc:"你是性格稳重、自带气场的英短蓝猫！独立懂事、做事有条理，不爱粘人但忠诚度拉满，是主人最靠谱的小管家，冷静又有担当，安静陪伴从不添乱～"},
+            ESFJ: {icon:"🐈",title:"布偶猫",desc:"你是温柔粘人、治愈满分的布偶猫！脾气超好、共情力极强，喜欢贴贴和陪伴，是公认的仙女猫，眼里只有主人，用全部的温柔温暖身边的人～"},
+            ENFP: {icon:"😺",title:"暹罗猫",desc:"你是活泼话痨、精力无限的暹罗猫！好奇心爆棚、社交天花板，聪明又粘人，走到哪叫到哪，永远充满活力，是家里的快乐制造机～"},
+            INFP: {icon:"🙀",title:"加菲猫",desc:"你是慵懒温柔、佛系治愈的加菲猫！性格软糯、不爱吵闹，喜欢安静的小世界，慵懒又可爱，不争不抢，只想舒舒服服地晒太阳睡大觉～"},
+            ISTJ: {icon:"🐯",title:"狸花猫",desc:"你是聪明务实、独立坚强的狸花猫！生存能力超强、做事理性，不娇生惯养，忠诚又护主，看似随性实则靠谱，是猫界的实力派～"},
+            ISFP: {icon:"✨",title:"金渐层",desc:"你是优雅高贵、温柔软萌的金渐层！脾气软乎乎、颜值天花板，安静又乖巧，喜欢被抚摸，自带贵气，是治愈一切不开心的小天使～"},
+            ENTP: {icon:"🐅",title:"美短虎斑",desc:"你是调皮机灵、好奇心拉满的美短虎斑！聪明好动、鬼点子超多，热爱探索和玩耍，身手矫健，永远对世界充满新鲜感，是猫界小机灵鬼～"},
+            INTJ: {icon:"🍊",title:"橘猫",desc:"你是佛系通透、大智若愚的橘猫！性格随和、不爱计较，吃得饱睡得香，看似慵懒佛系，实则看透一切，是自带福气的治愈小宝贝～"}
+        };
+
+        // 开始测试
+        function startTest() {
+            document.getElementById('welcome').classList.add('hidden');
+            document.getElementById('test').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        // 渲染题目 + 猫咪图片
+        function renderQuestion() {
+            const container = document.getElementById('question-container');
+            const q = questions[currentQuestion];
+            container.innerHTML = `
+                <!-- 题目配套猫咪图片 -->
+                <img src="${q.img}" class="cat-img" alt="猫咪">
+                <p class="text-xl font-bold mb-4">${currentQuestion+1}. ${q.q}</p>
+                <div class="space-y-3">
+                    ${q.a.map((item, idx) => `
+                        <label class="block p-3 border-2 border-cat-secondary rounded-xl cursor-pointer hover:bg-cat-light transition-all">
+                            <input type="radio" name="q${q.id}" value="${item.score}" class="mr-2" onchange="saveAnswer(${q.id}, '${item.score}')">
+                            ${item.text}
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+            // 更新进度
+            document.getElementById('progress').textContent = `${currentQuestion+1}/${totalQuestions} 题`;
+            // 按钮控制
+            document.getElementById('prev-btn').classList.toggle('hidden', currentQuestion === 0);
+            document.getElementById('next-btn').classList.toggle('hidden', currentQuestion === totalQuestions - 1);
+            document.getElementById('submit-btn').classList.toggle('hidden', currentQuestion !== totalQuestions - 1);
+        }
+
+        // 保存答案
+        function saveAnswer(qid, score) {
+            answers[qid] = score;
+        }
+
+        // 上一题
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        }
+
+        // 下一题
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions - 1) {
+                currentQuestion++;
+                renderQuestion();
+            }
+        }
+
+        // 提交测试，计算结果
+        function submitTest() {
+            // 统计维度分数
+            let E=0, I=0, S=0, N=0, T=0, F=0, J=0, P=0;
+            Object.values(answers).forEach(score => {
+                switch(score) {
+                    case 'E': E++; break; case 'I': I++; break;
+                    case 'S': S++; break; case 'N': N++; break;
+                    case 'T': T++; break; case 'F': F++; break;
+                    case 'J': J++; break; case 'P': P++; break;
+                }
+            });
+
+            // 生成人格类型
+            const type = 
+                (E >= I ? 'E' : 'I') +
+                (S >= N ? 'S' : 'N') +
+                (T >= F ? 'T' : 'F') +
+                (J >= P ? 'J' : 'P');
+
+            // 获取结果（兜底默认值）
+            const result = personalityResults[type] || {icon:"🐱",title:"中华田园猫",type:"神秘品种",desc:"你是独一无二的中华田园猫，自由可爱，自带灵气，是最特别的小猫咪～"};
+            
+            // 展示结果
+            document.getElementById('test').classList.add('hidden');
+            document.getElementById('result').classList.remove('hidden');
+            document.getElementById('result-icon').textContent = result.icon;
+            document.getElementById('result-title').textContent = result.title;
+            document.getElementById('result-type').textContent = `你的品种人格：${type} 型`;
+            document.getElementById('result-desc').textContent = result.desc;
+        }
+
+        // 重新测试
+        function restartTest() {
+            currentQuestion = 0;
+            answers = {};
+            document.getElementById('result').classList.add('hidden');
+            document.getElementById('welcome').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

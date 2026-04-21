@@ -21,7 +21,7 @@
                         }
                     },
                     fontFamily: {
-                        cute: ['"Comic Sans MS"', 'sans-serif']
+                        cute: ['"Comic Sans MS"', '"sans-serif"']
                     }
                 }
             }
@@ -35,9 +35,12 @@
             .btn-hover {
                 @apply transition-all duration-300 hover:scale-105 active:scale-95;
             }
-            /* 替换图片的猫咪文案样式 */
+            /* 🔥 核心修复：禁止文案换行，单行显示 */
             .cat-text-card {
                 @apply rounded-xl w-32 h-32 flex flex-col items-center justify-center mx-auto mb-4 border-2 border-cat-secondary bg-white text-cat-dark font-bold;
+            }
+            .cat-text-card span {
+                @apply whitespace-nowrap px-2;
             }
             .cat-home-card {
                 @apply rounded-xl shadow-md w-full h-32 flex flex-col items-center justify-center bg-white border-2 border-cat-secondary text-cat-dark font-bold text-lg;
@@ -71,7 +74,7 @@
 
         <!-- 测试页面 -->
         <div id="test" class="hidden py-8">
-            <!-- 🔥 修复换行：加宽容器、禁止换行、调整间距 -->
+            <!-- 顶部标题不换行 -->
             <div class="flex justify-between items-center mb-6 flex-nowrap gap-4 w-full">
                 <h2 class="text-2xl font-bold whitespace-nowrap">答题中...</h2>
                 <span id="progress" class="bg-cat-secondary px-3 py-1 rounded-full text-sm whitespace-nowrap">0/12 题</span>
@@ -142,7 +145,7 @@
             INTJ: {icon:"🍊",title:"橘猫",desc:"你是佛系通透、大智若愚的橘猫！性格随和、不爱计较，吃得饱睡得香，看似慵懒佛系，实则看透一切，是自带福气的治愈小宝贝～"}
         };
 
-        // 开始测试（修复无响应问题）
+        // 开始测试
         function startTest() {
             document.getElementById('welcome').classList.add('hidden');
             document.getElementById('test').classList.remove('hidden');
@@ -160,7 +163,6 @@
         // 保存答案 + 启用下一题按钮
         function saveAnswer(qid, score) {
             answers[qid] = score;
-            // 选中答案后，启用下一题/提交按钮
             document.getElementById('next-btn').disabled = false;
             document.getElementById('submit-btn').disabled = false;
         }
@@ -187,7 +189,7 @@
             // 更新进度
             document.getElementById('progress').textContent = `${currentQuestion+1}/${totalQuestions} 题`;
             
-            // 控制按钮显示 + 默认禁用按钮
+            // 控制按钮显示
             document.getElementById('prev-btn').classList.toggle('hidden', currentQuestion === 0);
             const nextBtn = document.getElementById('next-btn');
             const submitBtn = document.getElementById('submit-btn');
@@ -195,7 +197,7 @@
             nextBtn.classList.toggle('hidden', currentQuestion === totalQuestions - 1);
             submitBtn.classList.toggle('hidden', currentQuestion !== totalQuestions - 1);
             
-            // 重置按钮状态：未选答案则禁用
+            // 重置按钮状态
             nextBtn.disabled = !checkCurrentAnswer();
             submitBtn.disabled = !checkCurrentAnswer();
         }
@@ -208,7 +210,7 @@
             }
         }
 
-        // 下一题（必须选答案才能跳转）
+        // 下一题
         function nextQuestion() {
             if (!checkCurrentAnswer()) {
                 alert('🐱 请选择一个选项再继续哦~');
